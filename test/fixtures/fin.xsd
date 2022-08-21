@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="project" type="prType" />
+  <xsd:element name="transaction" type="transType" />
+  <xsd:complexType name="transType">
+    <xsd:sequence>
+      <xsd:element name="datum" type="xsd:string" />
+      <xsd:element name="value" type="xsd:float">
+        <!-- 
+        <xsd:attribute name="direction" type="xsd:string" />
+		-->
+      </xsd:element>
+      <xsd:element name="type" type="xsd:string" />
+      <xsd:element name="debitor" type="xsd:string" />
+      <xsd:element name="verwendung" type="xsd:string" />
+      <xsd:element name="konto" type="xsd:string" />
+      <xsd:element name="blz" type="xsd:string" />
+      <xsd:element name="debitor-id" type="xsd:string" />
+      <xsd:element name="Mandatsreferenz" type="xsd:string" />
+      <xsd:element name="Kundenreferenz" type="xsd:string" />
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:integer" />
+  </xsd:complexType>
+  <xsd:complexType name="prType">
+    <xsd:sequence>
+      <xsd:element ref="transaction" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
