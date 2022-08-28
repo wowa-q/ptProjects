@@ -11,7 +11,7 @@ from src.dkb import fileLoader as fl
 
 
 
-class CsvImporter(object):
+class DKB(object):
     '''
     Performs parsing of the CSV file from DKB
     '''
@@ -34,11 +34,19 @@ class CsvImporter(object):
             pth to the folder with csv files path shall of the type pathlib.Path
         '''
         self.csv_files = fl.FileLoader(pth).fileList
-        #self.csv_file = self.csv_files[0]
-        
+                
     def parseDkbData(self):
-        for csv in self.csv_files:
-            self._getData(csv)
+        pieces = []
+        self._getData(self.csv_files[0])
+        
+        # if len(self.csv_files) == 0:
+        #     return None
+        # for csv in self.csv_files:
+        #     pieces.append(self._getData(csv))
+        # if len(pieces) > 0:
+        #     return pd.concat(pieces)
+        # else:
+        #     return None
 
     def _getData(self, csv_file):       
         '''

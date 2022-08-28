@@ -3,8 +3,8 @@ import pytest
 from pathlib import Path
 
 from src.dkb.fileLoader import FileLoader
-from src.dkb.dkb import CsvImporter
-
+from src.dkb.dkb import DKB
+from src.dkb.db import DB
 
 @pytest.fixture
 def pathes():
@@ -24,10 +24,29 @@ def test_FileLoaderInitialization(pathes):
         print(csv)
 
 def test_csvRead(pathes):
-    loader = CsvImporter(pathes) 
+    loader = DKB(pathes) 
     assert loader != None
-    loader.parseDkbData
+    loader.parseDkbData()
     assert len(loader.csv_files) > 0
+
+def test_dbConnection(pathes):
+    db = DB(pathes, 'test_db', 'sqlite3')
+    assert db != None
+    check = db.createConnection()
+    assert check == True
+    db_file = Path(pathes / 'test_db.db')
+    assert db_file.is_file() == True
+    
+def test_dbTableCreate(pathes):
+    db = DB(pathes, 'test_db', 'sqlite3')
+    check = db.createConnection()
+    db.createNewTable('category')
+
+def test_dbImportDF(pathes):
+    db = DB(pathes, 'test_db', 'sqlite3')
+    check = db.createConnection()
+    loader = DKB(pathes)
+    loader.parseDkbData()
 
 '''-----------------------------------------------------------'''
 def add(numbers):

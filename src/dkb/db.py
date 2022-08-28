@@ -4,8 +4,11 @@ Created on 22.06.2021
 @author: wakl8754
 '''
 
+from ast import Str
 import logging
-import sqlite3  # con = sqlite3.connect('example.db')
+from pathlib import Path
+import sqlite3 as sql # con = sqlite3.connect('example.db')
+from sqlite3 import Error
 
 
 logging.basicConfig(level=logging.INFO, format='(%asctime%)s:%(message)s)', filename='builder.log' )
@@ -13,24 +16,34 @@ logging.basicConfig(level=logging.INFO, format='(%asctime%)s:%(message)s)', file
 class DB(object):
     __path = None   # file path of DB
     __name = None   # DB name
+    __type = None   # DB type
     __conn = None   # connection to DB
     __curs = None   # cursor in DB
     __ram = False   # option parameter to create DB in RAM only
     __tab = None    # current table name
 
+    # initiaization
+    def __init__(self, pth, db_name, db_type):
+        self.setPath(pth)
+        self.setDbName(db_name)
+        self.setDbType(db_type)
+
 # organization
 #------------------------------------------------------------------------------ 
-    def setPath(self, sPath):
+    def setPath(self, sPath) -> None:
         self.__path = sPath    
-    def setDbName(self, nm):
-        self.__name = nm        
-    def setTableName(self, nm):
+    def setDbName(self, nm) -> None:
+        self.__name = nm      
+    def setDbType(self, tp) -> None:
+        ''' 'sqlite3' is supported '''
+        self.__type = tp    # e.g.'sqlite3'  
+    def setTableName(self, nm) -> None:
         self.__tab = nm
-    def getTableName(self):
+    def getTableName(self) -> Str:
         return self.__tab
-    def getDbPath(self):
+    def getDbPath(self) -> Path:
         return self.__path + self.__name + '.db'
-    def setOptions(self, opt):
+    def setOptions(self, opt) -> None:
         '''
         opt = {'ram':True/False}
         '''
@@ -40,21 +53,39 @@ class DB(object):
             print('DB store options not provided')
             logging.debug('DB store options not provided')
     
-    def create(self):
+    def createConnection(self):
         ''' creates DB connection '''
+        if self.__type == 'sqlite3':
+            pth = str(self.__path / self.__name) + '.db'
+        else:
+            print('DB type not supported')
+            return None
+
         try:
             if self.__ram:
-                self.__conn = sqlite3.connect(":memory:")
+                self.__conn = sql.connect(":memory:")
                 logging.debug('DB in RAM was created')
             else:
-                pth = self.__path + self.__name + '.db'
-                self.__conn = sqlite3.connect(pth)
+                self.__conn = sql.connect(pth)
                 logging.debug(f'Connected to DB:  {pth}')
             self.__curs = self.__conn.cursor()
             return True
         except:
             print('DB could not be created')
             return False
+    
+    def createNewTable(self, name):
+        create_table_sql = """CREATE TABLE IF NOT EXISTS tasks (
+                                    id integer PRIMARY KEY,
+                                    name text NOT NULL,
+                                    priority integer,
+                                    status_id integer NOT NULL,
+                                    project_id integer NOT NULL,
+                                    begin_date text NOT NULL,
+                                    end_date text NOT NULL,
+                                    FOREIGN KEY (project_id) REFERENCES projects (id)
+                                );"""
+        self.__curs.execute(create_table_sql)
 
 # busyness
 #------------------------------------------------------------------------------ 
@@ -89,3 +120,27 @@ class DB(object):
         self.__conn.commit()
         logging.debug('Changes committed to DB')
         
+
+class SQLDB(object):
+    '''
+    Class to create and handle sqlite 3 DB
+    https://www.sqlitetutorial.net/
+    '''
+    
+    def __init__(self, db_file):
+        ''' db_file is a string path (type Path)'''
+        if True:
+            self._create(db_file)
+        else:
+            pass
+
+    def _create(self, db_file) -> None: 
+        try:
+            self.__con = sql.connect(db_file)   # create connection to db, means creates new db
+        except Error as e:
+            print(e)
+        finally:
+            if self.__con:
+                self.__con.close
+
+    
