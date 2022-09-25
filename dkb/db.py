@@ -5,6 +5,7 @@ Created on 22.06.2021
 '''
 
 from ast import Str
+from cmath import e
 import logging
 from pathlib import Path
 import sqlite3 as sql # con = sqlite3.connect('example.db')
@@ -53,7 +54,7 @@ class DB(object):
             print('DB store options not provided')
             logging.debug('DB store options not provided')
     
-    def createConnection(self):
+    def _createConnection(self):
         ''' creates DB connection '''
         if self.__type == 'sqlite3':
             pth = str(self.__path / self.__name) + '.db'
@@ -70,8 +71,9 @@ class DB(object):
                 logging.debug(f'Connected to DB:  {pth}')
             self.__curs = self.__conn.cursor()
             return True
-        except:
+        except Error as e:
             print('DB could not be created')
+            print(e)
             return False
     
     def createNewTable(self, name):
@@ -86,6 +88,17 @@ class DB(object):
                                     FOREIGN KEY (project_id) REFERENCES projects (id)
                                 );"""
         self.__curs.execute(create_table_sql)
+
+    def createTable(self, name):
+        self._createConnection()
+        sql =  f"""
+                CREATE TABLE IF NOT EXISTS {name} (
+                    id integer PRIMARY KEY,
+                    standard_type text,
+                    class text,
+                    direction text
+                );"""
+        self.__curs.execute(sql)
 
 # busyness
 #------------------------------------------------------------------------------ 
