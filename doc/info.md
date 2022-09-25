@@ -9,6 +9,7 @@
 * [pandas-sqlite3](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_sql.html)
 * [sqllite browser](https://sqlitebrowser.org/about/)
 * [ORM: SQL Alchemy](https://www.sqlalchemy.org/)
+* [SQLAlchemy tutotial](https://docs.sqlalchemy.org/en/13/core/tutorial.html)
 
 # Pandas Excel
 * [pandas-excel](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html#excel-files)

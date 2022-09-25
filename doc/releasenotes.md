@@ -2,11 +2,12 @@
 
 ## Release information
 
-|Package name   |package name short     |Version   
-|---------------|---                    | ----
-|DKB   	        |dkb.py   	            |0.0.0   
-|DB   	        |db.py   		        |0.0.0   
-|fileLoader     |fileLoader.py 	        |0.0.0   
+|Package name           |package name short     |Version   
+|---------------        |---                    | ----
+|DKB   	                |dkb.py   	            |1.0.0   
+|ORM   	                |orm.py   		        |1.0.0   
+|fileLoader             |fileLoader.py 	        |1.0.0  
+|DB_Handler             |dkb_import_test.py 	|1.0.0   
 
 ----
 
@@ -36,39 +37,43 @@
 * test the list is not empty if directory with csv files is fiven
 
 
-### DKB-Handler: CsvImporter
+### DKB-Handler: DKB
 #### New or changed features
-* `CsvImporter` defines the header of the table
-* using the directory with the csv files and file loader to get the csv file list 
-* `parseDkbData` using padas to parse the csv data from the list
+* `DKB` 
+  * defines the header of the table
+  * using the directory with the csv files and file loader to get the csv file list 
+  * `parseDkbData` using padas to parse the csv data from the list
 
 #### Fixed issues
-* 
+* parsing only first file from the file list - is fixed. Whenever DKB formated csv files are found, they will be concateneted
+* df DataFrame is not returned (local variable) - is fixed. Whenever DKB formated csv files are found, they will be concateneted, If only one csv file exists df will be returned directly
 #### Known issues and limitations
-* parsing only first file from the file list
-* df DataFrame is not returned (local variable)
+* df will be created without checking if data exist double - no check of meta data of the file
+* no id id created, which can be used in db
 #### Release Tests
 * check the file list is not empty
 
 
-### DKB-Handler: DB
+### DKB-Handler: orm.DB_Handler
 #### New or changed features
-* `DB` opens or creates aa sqlite3 db and creates connection to it with `createCnnection`
-* `createNewTable` fix layout table is created in the db
-* `close` the connection to the db 
-* `save` commit changes to the db **not tested**
+* `ORM` SQLAlchemy is used to create new DB 
+* `createDkbMetaTable` to create meta table of the imported csv file - **not tested**
+* `importDKBDF` uses df as input and imports it into DB by pandas
 
 #### Fixed issues
 *
 #### Known issues and limitations
-* no layout definition of table possible
-* no changes to the table 
-#### Release Tests
-* test if new file was created
-* test if connection is created
-* test the table is created
+* doesn't check data which are imported - can import the same df many times
 
-## Log
-* fileLoader.py:FileLoader class creates a list of the csv files, by given directory
-* dkb.py:CsvImporter class to parse the dkb csv files, by using pandas 
-* db.py:DB class open or create a new sqlite3 db creates connection
+#### Release Tests
+**not tested**
+
+## OPL
+* DKB should read the meta data
+* DKB should check if data are already created by using metadata
+* ORM should check if csv_df was already imported into db
+* ORM should create meta table and be used as ForeignKey in DKB-Table
+* create more tests for ORM
+* ORM create table with clases and be used as ForeignKey in DKB-Table
+* DKB shall invoke the ORM directly (not to be done by user) **?**
+* remove the DB module - not needed

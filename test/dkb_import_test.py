@@ -5,6 +5,7 @@ from pathlib import Path
 import dkb.dkb as dkb
 import dkb.db as sq
 import fl.fileLoader as fl
+import dkb.orm as orm
 
 
 
@@ -49,6 +50,16 @@ def test_dbTableCreate(pathes):
 
 def test_dbImportDF(pathes):
     db = sq.DB(pathes, 'test_db', 'sqlite3')
-    check = db._createConnection()
+    db.setTableName("dkb")
     loader = dkb.DKB(pathes)
-    loader.parseDkbData()
+    df=loader.parseDkbData()
+
+    # assert db.importNewData(df) == True
+
+def test_orm(pathes):
+    loader = dkb.DKB(pathes)
+    csv_df = loader.parseDkbData()
+    
+    o = orm.DB_Handler(pathes, 'new-db', 'sqlite3')
+    assert o != None
+    o.importDKBDF(csv_df)

@@ -11,8 +11,8 @@ import csv
 from fl.fileLoader import FileLoader
 
 
-DEBUG = True
-
+DEBUGLEVEL = 1
+INFO = False
 
 class DKB(object):
     '''
@@ -21,7 +21,8 @@ class DKB(object):
     # the line here to find header line
     __header_line = 6               
     # headers to map
-    __header = ['date',
+    __header = [
+                'date',
                 'booking-date',
                 'text',
                 'debitor',
@@ -30,7 +31,7 @@ class DKB(object):
                 'blz',
                 'value',
                 'debitor-id',
-                'Mandatsreferenz',
+                'Mandats reference',
                 'Customer reference']
     def __init__(self, pth):
         ''' @pth input pathlib.Path type see https://docs.python.org/3/library/pathlib.html 
@@ -42,20 +43,21 @@ class DKB(object):
                 
     def parseDkbData(self):
         pieces = []
-        #self._getData(self.csv_files)
+        df = None
+        
         self.csv_files = self.loader.getCsvFilesList()
         if len(self.csv_files) == 0:
-            if DEBUG: print('# list of files is empty #')
+            if DEBUGLEVEL > 0: print('# list of files is empty #')
             return None
         for csv in self.csv_files:
             df = self._getData(csv)
             pieces.append(df)
-        if len(pieces) > 0:
-            
+        if len(pieces) > 1:     
+            if INFO: print('# parseDkbData: # Concatenate DataFrames with panda #')       
             return pd.concat(pieces)
         else:
-            if DEBUG: print('# list of pieces is empty #')
-            return None
+            if DEBUGLEVEL > 0: print('# parseDkbData: # list of pieces is empty #')
+            return df
     
     def getDF(self):
         self.csv_files = self.loader.getCsvFilesList()
@@ -66,13 +68,13 @@ class DKB(object):
         reads the CSV file and creates data frame with the parsed data. Panda df is returned.
         https://pandas.pydata.org/pandas-docs/stable/reference/frame.html
         ''' 
-        if DEBUG: print(f"# DKB #: csv file: {csv_file} ")
+        if DEBUGLEVEL > 0: print(f"# DKB #: csv file: {csv_file} ")
         dkb_format = self._checkDkbFormat(csv_file)
         
         try:
             if dkb_format:
                 df = pd.read_csv(csv_file,
-                    skiprows = self.__header_line+1,                  
+                    skiprows = self.__header_line,                  
                     #encoding='utf-8', # needs to be None to be able to read German text                  
                     encoding_errors = "ignore", 
                     #warn_bad_lines=True, depricated
@@ -84,6 +86,8 @@ class DKB(object):
                 
                 df.columns = self.__header
                 return df
+            else:
+                return None
         except: 
             print(f"# DKB #: File not found at: {csv_file}, or file is corrupted")
             return None
@@ -93,10 +97,10 @@ class DKB(object):
         with open(csv_file, newline='') as csvfile:
             reader = csv.reader(csvfile, delimiter=';')
             for row in reader:
-                if DEBUG: print(', '.join(row))
+                if DEBUGLEVEL > 3: print(', '.join(row))
                 # TODO: check how many columns the csv file has
                 if "Kontonummer" in row:
-                    if DEBUG: print('# DKB #:  DKB format csv #')
+                    if DEBUGLEVEL > 1: print('# DKB #:  DKB format csv #')
                     return True
         return False
         
