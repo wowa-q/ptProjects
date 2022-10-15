@@ -59,6 +59,7 @@
 * `ORM` SQLAlchemy is used to create new DB 
 * `createDkbMetaTable` to create meta table of the imported csv file - **not tested**
 * `importDKBDF` uses df as input and imports it into DB by pandas
+* `getMeta` to provide a dictionary with the meta data from csv
 
 #### Fixed issues
 *

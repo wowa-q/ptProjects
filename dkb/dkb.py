@@ -36,10 +36,8 @@ class DKB(object):
     def __init__(self, pth):
         ''' @pth input pathlib.Path type see https://docs.python.org/3/library/pathlib.html 
             pth to the folder with csv files path shall of the type pathlib.Path
-        '''
-        
+        '''        
         self.loader = FileLoader(pth)
-        
                 
     def parseDkbData(self):
         pieces = []
@@ -51,8 +49,11 @@ class DKB(object):
             return None
         for csv in self.csv_files:
             df = self._getData(csv)
-            pieces.append(df)
-        if len(pieces) > 1:     
+            if df is not None:
+                pieces.append(df)
+        if len(pieces) == 1:
+            return df
+        elif len(pieces) > 1:     
             if INFO: print('# parseDkbData: # Concatenate DataFrames with panda #')       
             return pd.concat(pieces)
         else:
@@ -62,7 +63,40 @@ class DKB(object):
     def getDF(self):
         self.csv_files = self.loader.getCsvFilesList()
         self._getData(self.csv_files[0])
-
+    
+    def getMeta(self, csv_file):
+        dkb_format = self._checkDkbFormat(csv_file)
+        if dkb_format:
+            self.metaDic = {
+                "Kontonummer" : "",
+                "Von" : "",
+                "Bis" : "",
+                "Kontostand" : ""
+            }
+            with open(csv_file, newline='') as csvfile:
+                reader = csv.reader(csvfile, delimiter=';')
+                nrLines = 0
+                for row in reader:
+                    # if "Kontonummer" in row:
+                    if nrLines == 0:
+                        self.metaDic["Kontonummer"] = row[1]
+                        if DEBUGLEVEL > 1: print(f'# DKB #:  Kontonummer: {self.metaDic["Kontonummer"]} #')
+                    # elif "Von" in row:
+                    elif nrLines == 2:
+                        self.metaDic["Von"] = row[1]
+                        if DEBUGLEVEL > 1: print(f'# DKB #:  Von: {self.metaDic["Von"]} #')
+                    # elif "Bis" in row:
+                    elif nrLines == 3:
+                        self.end = row[1]
+                        self.metaDic["Bis"] = row[1] 
+                        if DEBUGLEVEL > 1: print(f'# DKB #:  Bis: {self.metaDic["Bis"]} #')
+                    # elif "Kontostand" in row:
+                    elif nrLines == 4:
+                        self.metaDic["Kontostand"] = row[1]
+                        if DEBUGLEVEL > 1: print(f'# DKB #:  Kontostand: {self.metaDic["Kontostand"]} #')
+                    elif nrLines > 6: return self.metaDic
+                    nrLines +=1
+           
     def _getData(self, csv_file):       
         '''
         reads the CSV file and creates data frame with the parsed data. Panda df is returned.
