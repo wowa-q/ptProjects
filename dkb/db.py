@@ -12,6 +12,9 @@ import sqlite3 as sql # con = sqlite3.connect('example.db')
 from sqlite3 import Error
 
 
+DEBUG = True
+INFO = False
+
 logging.basicConfig(level=logging.INFO, format='(%asctime%)s:%(message)s)', filename='builder.log' )
 
 class DB(object):
@@ -51,8 +54,8 @@ class DB(object):
         if 'ram' in opt:
             self.__ram = opt['ram']
         else:
-            print('DB store options not provided')
-            logging.debug('DB store options not provided')
+            if INFO: print('DB store options not provided')
+            logging.debug('DB.setOptions: DB store options not provided')
     
     def _createConnection(self):
         ''' creates DB connection '''
@@ -72,7 +75,7 @@ class DB(object):
             self.__curs = self.__conn.cursor()
             return True
         except Error as e:
-            print('DB could not be created')
+            if DEBUG: print('DB could not be created')
             print(e)
             return False
     
@@ -100,9 +103,26 @@ class DB(object):
                 );"""
         self.__curs.execute(sql)
 
+    def createDKBTable(self, name):
+        self._createConnection()
+        sql =  f"""
+                CREATE TABLE IF NOT EXISTS {name} (
+                    date
+                    booking-date
+                    booking-text text,
+                    debitor text,
+                    verwendung text,
+                    konto text,
+                    blz text,
+                    value integer,
+                    debitor-id integer,
+                    Mandat-reference text,
+                    Customer-reference text
+                );"""
+        self.__curs.execute(sql)
 # busyness
 #------------------------------------------------------------------------------ 
-    def importNewData(self, data):
+    def importNewData(self, df):
         '''
         https://www.fullstackpython.com/blog/export-pandas-dataframes-sqlite-sqlalchemy.html
         https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_sql.html
@@ -111,7 +131,7 @@ class DB(object):
         
         if self.__tab is not None:
             try:
-                data.to_sql(self.__tab,         # table name
+                df.to_sql(self.__tab,           # table name
                             self.__conn,        # connection
                             if_exists='append', # what to do if table already exists ('fail', 'replace, 'append' are the options)
                             index=False,        # use csv column as index
@@ -121,7 +141,7 @@ class DB(object):
                 print('CSV import to DB failed')
                 return False
         else:
-            print('No table selected to write')
+            if DEBUG: print('# DB.impotrNewData # No table selected to write')
             return False   
     
 # finalization
@@ -156,4 +176,3 @@ class SQLDB(object):
             if self.__con:
                 self.__con.close
 
-    

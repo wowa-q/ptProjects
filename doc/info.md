@@ -29,3 +29,58 @@ with pd.ExcelWriter('output.xlsx') as writer:
     df1.to_excel(writer, sheet_name='Sheet_name_1')
     df2.to_excel(writer, sheet_name='Sheet_name_2')
 ```
+
+# Excel libs
+## xlwings
+[xlwings quickstart](https://docs.xlwings.org/en/stable/quickstart.html) 
+[xlwings API](https://docs.xlwings.org/en/stable/api.html)
+### in nutshell
+```
+import xlwings as xw
+
+wb = xw.Book()  # opens a new workbook
+wb = xw.Book("FileName.xlsx") # connect to a file
+wb = xw.Book(r'C:\path\to\file.xlsx') # with the full path
+sheet = wb.sheets['sheet name']
+sheet.range("A1")
+sheet.range("A1:C3")
+sheet.range((1,1))
+sheet.range((1,1), (3,3))
+sheet.range("NamedRange")
+# Or using index/slice notation
+sheet["A1"]
+sheet["A1:C3"]
+sheet[0, 0]
+sheet[0:4, 0:4]
+sheet["NamedRange"]
+```
+
+## openpyxl
+[openpyxl](https://openpyxl.readthedocs.io/en/stable/)
+```
+from openpyxl import Workbook
+wb = Workbook()
+```
+grab the active worksheet
+```
+ws = wb.active
+```
+Data can be assigned directly to cells
+```
+ws['A1'] = 42
+```
+Rows can also be appended
+```
+ws.append([1, 2, 3])
+```
+Python types will automatically be converted
+```
+import datetime
+
+ws['A2'] = datetime.datetime.now()
+```
+
+Save the file
+```
+wb.save("sample.xlsx")
+```

@@ -68,12 +68,30 @@
 #### Release Tests
 **not tested**
 
+
+### DKB-Handler: ExcelWriter
+#### New or changed features
+* `ExcelWriter` 
+  * activates existing Excel by given file path
+  * `createSheet` create new sheet or returns if it already exists
+  * `writeMeta` writes meta data into the given sheet
+
+#### Fixed issues
+* no issues known
+#### Known issues and limitations
+* fix cells for meta data -> overwrite in case of new write
+* no write of data
+#### Release Tests 
+* manual tests only via excel call: r"d:\005-pj\ptPj\dkb\ptProjects\test\fixtures\haushalt.xlsm"
+
+
+
+
 ## OPL
-* DKB should read the meta data
 * DKB should check if data are already created by using metadata
 * ORM should check if csv_df was already imported into db
 * ORM should create meta table and be used as ForeignKey in DKB-Table
 * create more tests for ORM
-* ORM create table with clases and be used as ForeignKey in DKB-Table
+* ORM create table with classes and be used as ForeignKey in DKB-Table
 * DKB shall invoke the ORM directly (not to be done by user) **?**
 * remove the DB module - not needed

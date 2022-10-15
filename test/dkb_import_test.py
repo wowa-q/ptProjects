@@ -34,6 +34,8 @@ def test_csvRead(pathes):
     loader.parseDkbData()
     assert len(loader.csv_files) > 0
     assert loader._checkDkbFormat(pathes / "tst.csv") == True
+    dict = loader.getMeta(pathes / "tst.csv")
+    assert dict["Kontonummer"] != ""
 
 def test_dbConnection(pathes):
     db = sq.DB(pathes, 'test_db', 'sqlite3')
