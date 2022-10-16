@@ -43,6 +43,7 @@
   * defines the header of the table
   * using the directory with the csv files and file loader to get the csv file list 
   * `parseDkbData` using padas to parse the csv data from the list
+  * `getMeta` to provide a dictionary with the meta data from csv
 
 #### Fixed issues
 * parsing only first file from the file list - is fixed. Whenever DKB formated csv files are found, they will be concateneted
@@ -59,12 +60,16 @@
 * `ORM` SQLAlchemy is used to create new DB 
 * `createDkbMetaTable` to create meta table of the imported csv file - **not tested**
 * `importDKBDF` uses df as input and imports it into DB by pandas
-* `getMeta` to provide a dictionary with the meta data from csv
+* `_checkColumnExists` can check if column in table already exists (used by `addCathColumn` and `addClassColumn`)
+* `addCathColumn` and `addClassColumn` to add Fereign key columns in dkb table
+* created class and Cathegory tables
+
 
 #### Fixed issues
 *
 #### Known issues and limitations
 * doesn't check data which are imported - can import the same df many times
+* `addNewClass` and `addNewCath` do not work - connection to database is lost check [alchemy](https://docs.sqlalchemy.org/en/14/core/pooling.html#pool-disconnects)
 
 #### Release Tests
 **not tested**
@@ -89,10 +94,18 @@
 
 
 ## OPL
-* DKB should check if data are already created by using metadata
-* ORM should check if csv_df was already imported into db
-* ORM should create meta table and be used as ForeignKey in DKB-Table
-* create more tests for ORM
-* ORM create table with classes and be used as ForeignKey in DKB-Table
-* DKB shall invoke the ORM directly (not to be done by user) **?**
-* remove the DB module - not needed
+* DKB: 
+  * DKB should check if data are already created by using metadata?
+  * DKB should process only one csv file and add kontonummer to the meta data
+  * DKB shall invoke the ORM directly (not to be done by user) **?**
+* ORM
+  * ORM should check if csv_df was already imported into db
+  * ORM should create meta table and be used as ForeignKey in DKB-Table
+  * Create new table for logging data
+  * create more tests for ORM
+* exc
+  * Excel should have a GUI to associate a class with a row from DKB-Table
+
+* Refactoring:
+  * ORM needs to be executed in the right order (see main.py) -> create an user layer by using design pattern
+  * remove the DB module - not needed

@@ -21,8 +21,24 @@ if __name__ == '__main__':
     db_file = Path('D:/005-pj/ptpj/dkb/ptProjects/test/fixtures')
     o = orm.DB_Handler(db_file, 'new-db', 'sqlite3')
     assert o != None
-    o.importDKBDF(csv_df)
     
+    # DB methods
+    o.createClassTable()
+    o.createDkbMetaTable()
+    o.createCathTable()
+    o.createTables()
+    o.importDKBDF(csv_df)
+    o.addClassColumn()
+    o.addCathColumn()
+
+    cath_table = ['Versicherung', 4]
+    class_data = ['out', 'bla', 'fix', 'lastschrift']
+    o.addNewClass(class_data)
+    # class_data = ['out', 'bla', 'var', 'lastschrift']
+    # o.addNewClass(class_data)
+    # o.addNewCath(["versicherung", 4])
+    
+    # Excel methods
     csv_file = 'D:/005-pj/ptpj/dkb/ptProjects/test/fixtures/tst.csv'    
     writer = ExcelWriter(xls_file=r"d:\005-pj\ptPj\dkb\ptProjects\test\fixtures\haushalt.xlsm")
     sheet = writer.createSheet('Month', after='title')
