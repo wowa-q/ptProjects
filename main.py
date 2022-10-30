@@ -28,8 +28,10 @@ if __name__ == '__main__':
     o.createCathTable()
     o.createTables()
     o.importDKBDF(csv_df)
-    o.addClassColumn()
-    o.addCathColumn()
+    print(o._checkColumnExists('DKBTable', 'Class'))
+
+    # o.addClassColumn()
+    # o.addCathColumn()
 
     cath_table = ['Versicherung', 4]
     class_data = ['out', 'bla', 'fix', 'lastschrift']

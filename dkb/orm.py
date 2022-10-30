@@ -42,6 +42,7 @@ class DB_Handler(object):
         try:
             selCol = f"""SELECT {column} FROM {table};"""
             self.__curs.execute(selCol)
+            #self.__curs.close()
             if INFO: print (f'** Column {column} EXISTS')
             return True
         except:
@@ -68,6 +69,7 @@ class DB_Handler(object):
                         #     "date":Date
                         # }
                     )
+            self.__curs.close()
         except:
             print('ORM: CSV import to DB failed')
             return False
@@ -109,12 +111,14 @@ class DB_Handler(object):
         '''        
         column = 'Class'
         if self._checkColumnExists(self.tableName['dkb'], column):
+            if DEBUGLEVEL > 1: print(f"# addClassColumn: column: {column} is already present")
             return True
         create_new_column = f"""ALTER TABLE {self.tableName['dkb']} 
                                 ADD COLUMN {column} FOREIGN_KEY {self.tableName['class']} id;"""
         try:
             self.__curs = self.__conn.cursor()
             self.__curs.execute(create_new_column)
+            self.__curs.close()
             return True
         except ValueError as e:
             if DEBUGLEVEL: print('DB could not be created')
@@ -133,6 +137,7 @@ class DB_Handler(object):
         try:
             self.__curs = self.__conn.cursor()
             self.__curs.execute(create_cath_column)
+            self.__curs.close()
             return True
         except ValueError as e:
             if DEBUGLEVEL: print('DB could not be created')
