@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="https://www.w3schools.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="fin.xsd">
+  <meta>
+	<prName>Test</prName>
+    <nrTransactions>2</nrTransactions>
+    <lastTransaction>17.2.2019</lastTransaction>
+    <firstTransaction>1.1.2019</firstTransaction>
+	
+  </meta>
+  <transaction id="1">
+    <datum>17.2.2019</datum>
+    <value direction="in">20</value>
+    <type>tbd</type>
+    <debitor>tbd</debitor>
+    <verwendung>tbd</verwendung>
+    <konto>tbd</konto>
+    <blz>tbd</blz>
+    <debitor-id>tbd</debitor-id>
+    <Mandatsreferenz>tbd</Mandatsreferenz>
+    <Kundenreferenz>tbd</Kundenreferenz>
+  </transaction>
+  <transaction id="2">
+    <datum>17.2.2019</datum>
+    <value direction="in">20</value>
+    <type>tbd</type>
+    <debitor>tbd</debitor>
+    <verwendung>tbd</verwendung>
+    <konto>tbd</konto>
+    <blz>tbd</blz>
+    <debitor-id>tbd</debitor-id>
+    <Mandatsreferenz>tbd</Mandatsreferenz>
+    <Kundenreferenz>tbd</Kundenreferenz>
+  </transaction>
+</project>
