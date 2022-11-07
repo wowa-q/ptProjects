@@ -21,7 +21,7 @@ class ExcelWriter(object):
     '''
     def __init__(self, xls_file) -> None:
         '''
-        @xls_path = r"d:\005-pj\ptPj\dkb\ptProjects\test\fixtures\haushalt.xlsm")
+        @xls_file = r"d:\005-pj\ptPj\dkb\ptProjects\test\fixtures\haushalt.xlsm")
         '''
         self.wb = xw.Book(xls_file)
         # -------------------------------------- #
@@ -42,7 +42,7 @@ class ExcelWriter(object):
             sheet[cell2].value = metaDict[key]
             ctr += 1
     
-    def createSheet(self, name, after):
+    def createSheet(self, name: str, after: str):
         '''
         Creates a new sheet if it doesn not exist after @after sheet
         returns new sheet
@@ -55,6 +55,9 @@ class ExcelWriter(object):
             sheet = self.wb.sheets.add(name=name, before=None, after=after)
         return sheet
 
+    def importMonthData(self, name):
+        # TODO: this method should write the data for the selected month
+        pass
 
 class ExcelLoader(object):
     '''
