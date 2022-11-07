@@ -1,5 +1,7 @@
 from abc import ABC, ABCMeta, abstractmethod
+from logging import raiseExceptions
 from pathlib import Path
+import argparse
 
 # user packages:
 from dkb.dkb import DKB
@@ -17,16 +19,17 @@ class Command(ABC):
 
 class CmdNewMonth(Command): # TODO: Receiver class to be enhanced
     ''' Concrete commands for the Database'''
-    def __init__(self, dkb_ld, orm, writer, month):
+    def __init__(self, dkb_ld, orm, writer, year, month):
         self.dkb_ld = dkb_ld
         self.orm = orm
         self.writer = writer
+        self.year = year
         self.month = month
 
     def execute(self) -> None:
-        self.orm.getMonth(self.month)
+        self.orm.getMonth(self.year, self.month) # TODO: Receiver class to be enhanced
         self.writer.createSheet(self.month, after='title')
-        self.writer.useDataToImport # TODO: Receiver class to be enhanced
+        # self.writer.useDataToImport # TODO: Receiver class to be enhanced
 
 class CmdUpdateDbTable(Command):    # TODO: Receiver class to be enhanced
     ''' Concrete commands for the Database'''
@@ -57,18 +60,22 @@ class CmdCreateNewDB(Command):  # ready to test
         self.o.createClassTable()
         self.o.createDkbMetaTable()
         self.o.createCathTable()
-        self.o.createTables()
+        # self.o.createTables() # not needed anymore
         self.o.importDKBDF(csv_df)
         self.o.addClassColumn()
         self.o.addCathColumn()
+        self.o.updateEngine()
 
 class CmdCheckFileSystem(Command):
-    def _init(self, receiver=None):
+    def __init__(self, receiver=None):
         self.receiver = receiver
 
     def execute(self) -> None:
         if self.receiver is None:
             print('Nothing to be done here')
+        elif isinstance(self.receiver, Path):
+            if self.receiver.exists() == True:
+                raise ValueError('The file exists allready')
 
 class Invoker(object):
     ''' The Invoker is associated with one or several commands. It sends a request
@@ -108,23 +115,3 @@ class Invoker(object):
         print("Invoker: Does anybody want something done after I finish?")
         if isinstance(self._on_finish, Command):
             self._on_finish.execute()
-
-if __name__ == "__main__":
-    """
-    The client code can parameterize an invoker with any commands.
-    """
-    # Create Receiver objects    
-    pth = Path('D:/005-pj/ptpj/dkb/ptProjects/test/fixtures')
-    db_file = Path('D:/005-pj/ptpj/dkb/ptProjects/test/fixtures')
-    xls_file=r"d:\005-pj\ptPj\dkb\ptProjects\test\fixtures\haushalt.xlsm"
-    db_name = 'new_db'
-    dkb_ld = DKB(pth)    
-    orm = orm.DB_Handler(db_file, db_name, 'sqlite3')   
-    writer = ExcelWriter(xls_file)
-
-    # Parametrize the Invoker and execute the command
-    invoker = Invoker()
-    invoker.set_on_start(CmdCheckFileSystem(None))
-    invoker.set_main_command(CmdCreateNewDB(dkb_ld, orm))
-    invoker.run_commands()
-    
