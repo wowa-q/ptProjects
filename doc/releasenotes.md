@@ -70,6 +70,7 @@
 #### Known issues and limitations
 * doesn't check data which are imported - can import the same df many times
 * `addNewClass` and `addNewCath` do not work - connection to database is lost check [alchemy](https://docs.sqlalchemy.org/en/14/core/pooling.html#pool-disconnects)
+* `_checkColumnExists` does not provide the correct result
 
 #### Release Tests
 **not tested**

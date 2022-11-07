@@ -7,6 +7,7 @@ Created on 22.06.2021
 from typing import Any
 import pandas as pd 
 import csv
+import hashlib
 # import user packages
 from fl.fileLoader import FileLoader
 
@@ -33,11 +34,11 @@ class DKB(object):
                 'debitor-id',
                 'Mandats reference',
                 'Customer reference']
-    def __init__(self, pth):
+    def __init__(self):
         ''' @pth input pathlib.Path type see https://docs.python.org/3/library/pathlib.html 
             pth to the folder with csv files path shall of the type pathlib.Path
         '''        
-        self.loader = FileLoader(pth)
+        pass
                 
     def parseDkbData(self):
         pieces = []
@@ -127,14 +128,58 @@ class DKB(object):
             return None
         
     def _checkDkbFormat(self, csv_file) -> Any:   
-
-        with open(csv_file, newline='') as csvfile:
-            reader = csv.reader(csvfile, delimiter=';')
-            for row in reader:
-                if DEBUGLEVEL > 3: print(', '.join(row))
-                # TODO: check how many columns the csv file has
-                if "Kontonummer" in row:
-                    if DEBUGLEVEL > 1: print('# DKB #:  DKB format csv #')
-                    return True
-        return False
-        
+        try:
+            with open(csv_file, newline='') as csvfile:
+                reader = csv.reader(csvfile, delimiter=';')
+                ctr = 0
+                for row in reader:
+                    if DEBUGLEVEL > 3: print(', '.join(row))
+                    # TODO: check how many columns the csv file has
+                    if ctr > 20: break
+                    if "Kontonummer" in row:
+                        if DEBUGLEVEL > 1: print('# DKB #:  DKB format csv #')
+                        return True                    
+                    ctr =+ 1
+                return False
+        except FileNotFoundError:
+            print(f"# DKB #: File not found at: {csv_file}, or file is corrupted")
+            return False
+    
+    def get_dkb_df(self, csv_file):
+        if self._checkDkbFormat(csv_file):
+            # with open(hashlib.csv_file, 'rb') as f:
+            #     hash = hashlib.file_digest(f, 'sha256')
+            #     self._hach_table.append(hash)
+            #     print(f'{hash}')
+            df = pd.read_csv(csv_file,
+                    skiprows = self.__header_line,                  
+                    #encoding='utf-8', # needs to be None to be able to read German text                  
+                    encoding_errors = "ignore", 
+                    #warn_bad_lines=True, depricated
+                    delimiter=";",
+                    skipinitialspace = True,
+                    parse_dates = [0,1], # to parse these colums as date
+                    infer_datetime_format=True
+                    )
+                
+            df.columns = self.__header
+            return df
+        else:
+            return None
+    
+    def get_dkb_df_from_folder(self, pth):
+        pieces = []
+        df = None 
+        self.loader = FileLoader(pth)    
+        self.csv_files = self.loader.getCsvFilesList()
+        if len(self.csv_files) == 0:
+            if DEBUGLEVEL > 0: print('# list of files is empty #')
+            return None
+        for csv in self.csv_files:
+            df = self.get_dkb_df(csv)
+            if df is not None:
+                pieces.append(df)
+        if len(pieces) > 1:     
+            if INFO: print('# parseDkbData: # Concatenate DataFrames with panda #')       
+            df = pd.concat(pieces)
+        return df
