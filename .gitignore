@@ -135,3 +135,4 @@ dmypy.json
 # db files
 .db
 
+test/fixtures/db4test.db
