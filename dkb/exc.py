@@ -11,6 +11,9 @@ import xlwings as xw
 
 # user packages:
 
+class ExcelCfg(object):
+    _gesamtkosten_table = {'start':'A1', 'stop': 'C1'}
+    _account_wowa = {'start': 'A7', 'stop': 'C7'}
 
 class ExcelWriter(object):
     '''

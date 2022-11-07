@@ -20,15 +20,15 @@ class Command(ABC):
 class CmdNewMonth(Command): # TODO: Receiver class to be enhanced
     ''' Concrete commands for the Database'''
     def __init__(self, dkb_ld, orm, writer, year, month):
-        self.dkb_ld = dkb_ld
+        #self.dkb_ld = dkb_ld
         self.orm = orm
         self.writer = writer
         self.year = year
         self.month = month
 
     def execute(self) -> None:
-        self.orm.getMonth(self.year, self.month) # TODO: Receiver class to be enhanced
-        self.writer.createSheet(self.month, after='title')
+        self.orm.get_month(self.year, self.month) # TODO: Receiver class to be enhanced
+        self.writer.create_new_sheet(self.month, after='title')
         # self.writer.useDataToImport # TODO: Receiver class to be enhanced
 
 class CmdUpdateDbTable(Command):    # TODO: Receiver class to be enhanced
@@ -42,29 +42,38 @@ class CmdUpdateDbTable(Command):    # TODO: Receiver class to be enhanced
         pass
 
 class CmdImportNewCsv(Command): # TODO: Receiver class to be enhanced
-    def __init__(self, dkb_ld, orm):
+    def __init__(self, dkb_ld, orm, csv_file):
         self.dkb_ld = dkb_ld
         self.orm = orm
+        self.csv_file = csv_file
     
     def execute(self) -> None:
-        self.dkb_ld.parseDkbData()
+        df = self.dkb_ld.get_dkb_df(self.csv_file)
+        self.orm.import_dkb_df(df)
 
 class CmdCreateNewDB(Command):  # ready to test
     ''' Command class to create new DB '''
-    def __init__(self, dkb_ld, orm):
+    def __init__(self, dkb_ld, orm, csv_file):
         self.dkb_ld = dkb_ld
         self.o = orm
+        self.csv_file = csv_file
 
     def execute(self) -> None:         
-        csv_df = self.dkb_ld.parseDkbData()        
-        self.o.createClassTable()
-        self.o.createDkbMetaTable()
-        self.o.createCathTable()
+        csv_df = self.dkb_ld.get_dkb_df_from_folder(self.csv_file)        
+        # self.o.createClassTable()
+        # self.o.createDkbMetaTable()
+        # self.o.createCathTable()
+        self.o.create_class_table()
+        self.o.create_dkb_meta_table()
+        self.o.create_cath_table()
         # self.o.createTables() # not needed anymore
-        self.o.importDKBDF(csv_df)
-        self.o.addClassColumn()
-        self.o.addCathColumn()
-        self.o.updateEngine()
+        self.o.import_dkb_df(csv_df)
+        # self.o.addClassColumn()
+        # self.o.addCathColumn()
+        # self.o.updateEngine()
+        self.o.add_class_column()
+        self.o.add_cath_column()
+        self.o.update_engine()
 
 class CmdCheckFileSystem(Command):
     def __init__(self, receiver=None):

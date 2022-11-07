@@ -65,7 +65,7 @@ class DKB(object):
         self.csv_files = self.loader.getCsvFilesList()
         self._getData(self.csv_files[0])
     
-    def getMeta(self, csv_file):
+    def get_meta(self, csv_file):
         dkb_format = self._checkDkbFormat(csv_file)
         if dkb_format:
             self.metaDic = {

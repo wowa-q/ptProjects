@@ -54,14 +54,14 @@ class DB_Handler(object):
     
     # ------------------------------------------------------------------------------
     # user inner functions        
-    def importDKBDF(self, df):
+    def import_dkb_df(self, df): # tested
         '''
         imports pandas DF into SQL table 'dkb'
         '''
         if df is None:
-            print('# importDKBDF: No data Frame received #')
+            print('# import_dkb_df: No data Frame received #')
         self.tableName['dkb'] = 'DKBTable'
-        if DEBUGLEVEL > 1: print(f"# importDKBDF: db-Table-Name: {self.tableName['dkb']}")
+        if DEBUGLEVEL > 1: print(f"# import_dkb_df: db-Table-Name: {self.tableName['dkb']}")
         try:
             
             self.meta = self.maker.getMetaData()
@@ -80,7 +80,7 @@ class DB_Handler(object):
         
         return True
 
-    def createDkbMetaTable(self):
+    def create_dkb_meta_table(self):
         self.meta_table = Table(self.tableName['meta'], self.metadata, 
             Column('start-date', String, nullable=False),
             Column('end-date', String, nullable=False),
@@ -89,7 +89,7 @@ class DB_Handler(object):
             extend_existing=True,
         )
 
-    def createClassTable(self):
+    def create_class_table(self): # tested
         self.tableName['class'] = 'ClassTable'
         self.class_table = Table(self.tableName['class'], self.metadata, 
             Column('INOUT', String, nullable=False),
@@ -97,11 +97,11 @@ class DB_Handler(object):
             Column('fix', String, nullable=False),
             Column('konto', String, nullable=False),
             # Column('last_updated', DateTime, onupdate=datetime.datetime.now)
-            extend_existing=True,
+            extend_existing=False,
         )
         self.class_table.create(self.engine)
     
-    def createCathTable(self):
+    def create_cath_table(self): # tested
         self.tableName['cath'] = 'CathTable'
         self.cath_table = Table(self.tableName['cath'], self.metadata, 
             Column('type', String, nullable=False),
@@ -110,19 +110,22 @@ class DB_Handler(object):
         )
         self.cath_table.create(self.engine)
     
-    def createTables(self):
+    def create_tables(self):
         self.metadata.create_all(self.engine)
     
-    def updateEngine(self):
+    def update_engine(self):
         # to be used, if any changes were by done on the DB outside of this handler
         self.engine = self.maker.createEngine()     # create new engine to reload
         self.meta = self.maker.getMetaData()
 
-    def _check_column_exists(self, column):
-        dkb_table = Table(self.tableName['dkb'], self.meta, autoload=True, autoload_with=self.engine)
+    def _check_column_exists(self, column): # tested
+        dkb_table = Table(self.tableName['dkb'], self.metadata, 
+                        autoload=True, 
+                        autoload_with=self.engine)
         if column in dkb_table.columns: return True
+        else: return False
 
-    def addClassColumn(self):        
+    def add_class_column(self): # tested   
         column = 'Class'
         if self._check_column_exists(column): return
         tableName = self.tableName['dkb']
@@ -132,7 +135,7 @@ class DB_Handler(object):
         with self.engine.connect() as conn:
             conn.execute(text(create_new_column))
             
-    def addCathColumn(self):
+    def add_cath_column(self): # tested
             column = 'Cath'
             if self._check_column_exists(column): return
             tableName = self.tableName['dkb']
@@ -157,30 +160,38 @@ class DB_Handler(object):
 
     # ------------------------------------------------------------------------------
     # busyness functions 
-    def addNewClass(self, class_data):
-        self.engine = self._createEngine()
+    def add_new_class(self, class_data): # tested
         if len(class_data) != 4:
             if DEBUGLEVEL > 1: print(f"Number of values not equal to number of columns")
             return False
-        ins = self.class_table.insert().values(class_data)
+        class_table = Table(self.tableName['class'], self.metadata, 
+                        autoload=True, 
+                        autoload_with=self.engine)
+        ins = class_table.insert().values(class_data)
         self.engine.execute(ins)
     
-    def addNewCath(self, cath_data):
+    def add_new_cath(self, cath_data): # tested
         if len(cath_data) != 2:
             if DEBUGLEVEL > 1: print(f"Number of values not equal to number of columns")
             return False
-        ins = self.cath_table.insert().values(cath_data)
+        cath_table = Table(self.tableName['cath'], self.metadata, 
+                        autoload=True, 
+                        autoload_with=self.engine)
+        ins = cath_table.insert().values(cath_data)
         self.engine.execute(ins)
     
     # ------------------------------------------------------------------------------
     # untested functions 
-    def getMonth(self, year, month):
+    def get_month(self, year, month):
         if 'Jan' in month:
             if DEBUGLEVEL > 0: print(f'Getting {month} from DB')
             month = '01'
 
         # get table from the data base: https://docs.sqlalchemy.org/en/13/core/reflection.html?highlight=table+reflection#overriding-reflected-columns
-        dkb_table = Table(self.tableName['dkb'], self.meta, autoload=True, autoload_with=self.engine)
+        dkb_table = Table(self.tableName['dkb'], 
+                            self.metadata, 
+                            autoload=True, 
+                            autoload_with=self.engine)
         
         selection = select([(dkb_table.c.date + ", " + \
                             dkb_table.c.text + ", " +   \
@@ -193,13 +204,16 @@ class DB_Handler(object):
             selected_data=conn.execute(selection).fetchall()
         return selected_data
 
-    def getClass(self):
-        dkb_table = self.metadata(self.tableName['dkb'])
+    def get_class(self):
+        dkb_table = Table(self.tableName['dkb'], 
+                            self.metadata, 
+                            autoload=True, 
+                            autoload_with=self.engine)        
         stm = select([dkb_table.c.Class])
         classes = self.engine.execute(stm).fetchall()
         
-        s = select([self.class_table])
-        classes = self.engine.execute(s)
+        # s = select([self.class_table])
+        # classes = self.engine.execute(s)
         return classes
     
 class DB_Pure_SqlLiteHandler(object):
