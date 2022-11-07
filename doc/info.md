@@ -11,6 +11,15 @@
 * [ORM: SQL Alchemy](https://www.sqlalchemy.org/)
 * [SQLAlchemy tutotial](https://docs.sqlalchemy.org/en/13/core/tutorial.html)
 
+get the table related by a foreign key
+- `employees`: table name
+- `employee_dept`: column Foreign Kex
+
+`list(employees.columns.employee_dept.foreign_keys)[0].column.table`
+
+get the "key" of a column, which defaults to its name, but can be any user-defined string:
+`employees.columns.employee_name.key`
+
 # Pandas Excel
 * [pandas-excel](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html#excel-files)
 * [convert to excel](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_excel.html#pandas.DataFrame.to_excel)
