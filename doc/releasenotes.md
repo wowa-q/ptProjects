@@ -91,16 +91,46 @@
 #### Release Tests 
 * manual tests only via excel call: r"d:\005-pj\ptPj\dkb\ptProjects\test\fixtures\haushalt.xlsm"
 
+### ui:api 
+#### New or changed features
+* Command interface created
+* Invoker createdd supporting `set_on_start`, `set_main_command`, `set_on_finish`
+* Command classes created:
+  * `CmdNewMonth`: to create new month sheet in Excel by loading data from DB
+  * `CmdUpdateDbTable`: to update the table in DB from Excel _UNTESTED_
+  * `CmdImportNewCsv`: to import new csv file into DB _UNTESTED_
+  * `CmdCreateNewDB`: to create new DB file, with all necessary tables
+  * `CmdCheckFileSystem`: to check if the file exists _UNTESTED_ is needed?
+  * ``
 
+### ui:main2
+#### New or changed features
+* parsing the arguments and initializing the Invoker with the right command
 
+### Release Test
+* Manual test `CmdCreateNewDB` via Excel button
+* Manual test `CmdNewMonth` via Excel button - to create new sheet
+  * load data not implemented yet
+
+### ui:haushalt.xlsm
+#### New or changed features
+* Button `NEW DB`
+* Button `Januar` etc.
+* Macro to initialize `CmdCreateNewDB`
+* Macro to initialize `CmdNewMonth` 
+
+### Release Test
+* Manual test `CmdCreateNewDB` via Excel button
+* Manual test `CmdNewMonth` via Excel button - to create new sheet
+  * load data not implemented yet
 
 ## OPL
 * DKB: 
   * DKB should check if data are already created by using metadata?
   * DKB should process only one csv file and add kontonummer to the meta data
-  * DKB shall invoke the ORM directly (not to be done by user) **?**
+  * DKB shall calculate the hash over the csv file, fetch the kontonummer and provide this to orm to be created in the meta table
 * ORM
-  * ORM should check if csv_df was already imported into db
+  * ORM should check if csv_df was already imported into db by checking the hash
   * ORM should create meta table and be used as ForeignKey in DKB-Table
   * Create new table for logging data
   * create more tests for ORM
@@ -108,5 +138,5 @@
   * Excel should have a GUI to associate a class with a row from DKB-Table
 
 * Refactoring:
-  * ORM needs to be executed in the right order (see main.py) -> create an user layer by using design pattern
+  * 
   * remove the DB module - not needed

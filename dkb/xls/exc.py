@@ -4,8 +4,6 @@ Created on 01.09.2022
 
 @author: wakl8754
 '''
-import pandas as pd # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html
-from pathlib import Path
 import xlwings as xw
 
 
@@ -20,9 +18,6 @@ class ExcelWriter(object):
     class to write into existing Excel by using xlwings
     '''
     def __init__(self, xls_file) -> None:
-        '''
-        @xls_file = r"d:\005-pj\ptPj\dkb\ptProjects\test\fixtures\haushalt.xlsm")
-        '''
         self.wb = xw.Book(xls_file)
         # -------------------------------------- #
         sheet_test = self.wb.sheets("title")
@@ -42,7 +37,7 @@ class ExcelWriter(object):
             sheet[cell2].value = metaDict[key]
             ctr += 1
     
-    def createSheet(self, name: str, after: str):
+    def create_new_sheet(self, name: str, after: str):
         '''
         Creates a new sheet if it doesn not exist after @after sheet
         returns new sheet
@@ -55,24 +50,8 @@ class ExcelWriter(object):
             sheet = self.wb.sheets.add(name=name, before=None, after=after)
         return sheet
 
-    def importMonthData(self, name):
-        # TODO: this method should write the data for the selected month
-        pass
-
-class ExcelLoader(object):
-    '''
-    class to create Excel by using Pandas Data Frame
-    '''
-    def __init__(self, df=None) -> None:
-        if df:
-            self.df = df
-    
-    def setExcelParam(self, excel_path, sheet_name):
-        self.excel_writer = excel_path
-        self.sheet_name = sheet_name
-    
-    def createExcel(self):
-        self.df.to_excel(self.excel_wrtier,
-                        self.sheet_name,
-                        engine='openpyxl',
-                        freeze_panes=(1,1))
+    def write_month(self, sheet, data):
+        cells = ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
+        for ln_ctr, dt in enumerate(data, start=5):
+            for cell, val in zip(cells, list(dt)):
+                sheet[cell+str(ln_ctr)].value = str(val)
