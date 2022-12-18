@@ -1,3 +1,9 @@
+# not used files
+sandbox/
+tp_gui.py
+batch_log.txt
+fixtures/
+
 # draio
 *.bkp
 *.dtmp

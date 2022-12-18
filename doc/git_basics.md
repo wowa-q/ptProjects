@@ -28,4 +28,25 @@ https://www.youtube.com/watch?v=HVsySz-h9r4&t=4s
     - `.` to clone to current directory
 2. `git remote -v` lists information about the repository
 3. `git branch -a` shows all the branches including branches on remote repository
-4. after chenges on the code `git diff` to show the changes, which were done
+4. after chenges on the code `git diff` to show the changes, which were done. Works only if the file is already tracked
+5. `git add -A` to add changes to the stage
+6. `git commit -m "message` to commit on local repository
+7. ! `git pull origin master` to pull first the changes from the remote repository to the local, where master is the branch
+8. `git push origin master` to push the changes to remote repository
+
+## branching
+1. `git branch <branch-name>` to create a branch 
+2. `git checkout <branch-name>` to change to the branch
+3. add changes as described above to the branche
+4. `git push -u origin <branch-name>` to push the branch to remote repository
+> to add automatically the branch to remote repository - can be done instead step 4
+```
+git pull
+git push
+```
+5. `git checkout master` to change to the local master branch
+6. `git pull origine master` to update master
+7. `git branch --merged` shows the branches which were merged
+8. `git merge <branch-name>` to merge the branch to the master branch -> master branch can be pushed like before (with `pull` nd `push` to remote
+9. `git branch -d <branch-name>` to delete the branch from local repository 
+10. `git push origin --delete <branch-name>` to delete the branch from remote repository

@@ -1,3 +1,5 @@
+
+
 # Release Notes - dkb module
 
 ## Release information
@@ -124,19 +126,5 @@
 * Manual test `CmdNewMonth` via Excel button - to create new sheet
   * load data not implemented yet
 
-## OPL
-* DKB: 
-  * DKB should check if data are already created by using metadata?
-  * DKB should process only one csv file and add kontonummer to the meta data
-  * DKB shall calculate the hash over the csv file, fetch the kontonummer and provide this to orm to be created in the meta table
-* ORM
-  * ORM should check if csv_df was already imported into db by checking the hash
-  * ORM should create meta table and be used as ForeignKey in DKB-Table
-  * Create new table for logging data
-  * create more tests for ORM
-* exc
-  * Excel should have a GUI to associate a class with a row from DKB-Table
 
-* Refactoring:
-  * 
-  * remove the DB module - not needed
+
