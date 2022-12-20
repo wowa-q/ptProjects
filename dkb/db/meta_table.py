@@ -1,9 +1,19 @@
-from sqlalchemy import ForeignKey, Column, String, Integer, CHAR, DateTime
+'''
+Interface to db table CsvMeta
+'''
+# standard library
 from datetime import datetime
+# 3rd party
+from sqlalchemy import Column, String, Integer, DateTime
+#from sqlalchemy import ForeignKey, CHAR
+
+# user packages
 from dkb.db.constructor import Base
 from dkb.cfg import ResponseCode as RC
 
-class CSV_Meta(Base):
+# pylint: disable=too-few-public-methods
+class CsvMeta(Base):
+    ''' class to build a table in the data base '''
     __tablename__ = "csv-meta"
     id = Column("id", Integer, primary_key=True)
     name = Column("name", String)
@@ -20,33 +30,36 @@ class CSV_Meta(Base):
     def __repr__(self) -> str:
         return f"CSV: {self.name}"
 
-class CSV_Table_Handler(object):
-    
+# pylint: disable=too-few-public-methods
+class CsvMetaTableHandler():
+    ''' class providing methods to work with the table from data base '''
     def __init__(self, sessionmaker, engine) -> None:
         self.session = sessionmaker()
         self.engine = engine
 
-    def add(self, ln_dict):        
+    def add(self, ln_dict):
+        ''' method to add new entry in the table '''   
         date = None
         # konto = str(ln_dict['name']).strip(".csv")[-10:]
         konto = ln_dict['konto']
         name = str(ln_dict['name']) #[-14:]
         checksum = ln_dict['checksum']
         date = ln_dict.get('date')
-        new = CSV_Meta(name, date, konto, checksum)
+        new = CsvMeta(name, date, konto, checksum)
         self.session.add(new)
         self.session.commit()
         return RC.META_TABLE_OK
 
     def find_checksum(self, checksum):
+        ''' searching checksum in the table '''
         print(f"searching checksum: {checksum}")
         try:
-            results = self.session.query(CSV_Meta.name,
-                                        CSV_Meta.id,
-                                        CSV_Meta.date,
-                                        CSV_Meta.konto,
-                                        CSV_Meta.checksum                                        
-                                        ).filter(CSV_Meta.checksum == checksum)
+            results = self.session.query(CsvMeta.name,
+                                        CsvMeta.id,
+                                        CsvMeta.date,
+                                        CsvMeta.konto,
+                                        CsvMeta.checksum                                        
+                                        ).filter(CsvMeta.checksum == checksum)
             lres = []
             for result in results:
                 print(result)

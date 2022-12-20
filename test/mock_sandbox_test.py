@@ -1,3 +1,4 @@
+# pylint: skip-file
 '''
 https://www.youtube.com/watch?v=xT4SV7AH3G8
 '''
@@ -13,15 +14,16 @@ from .context import dkb
 # from dkb.db import dkb_table, class_table 
 # from dkb import dkb
 # from dkb import api
-from sandbox import main_test
+from sandbox import mocking
 
-@patch('sandbox.main.fun_to_be_mocked')
+@patch('sandbox.mocking.fun_to_be_mocked')
 def test_Mock_basic(mock_fun_to_be_mocked):
+    # pytest.skip('not correct test')
     mock_fun_to_be_mocked.return_value = 4
-    assert main_test.fun_to_be_tested() == 6, "fun_to_be_mocked returned other than 3"
+    assert mocking.fun_to_be_tested() == 7, "fun_to_be_mocked returned other than 3"
     
 
-@patch('sandbox.main.fun_to_be_mocked')
+@patch('sandbox.mocking.fun_to_be_mocked')
 def test_Mock_instance(mock_fun_to_be_mocked):
     # to mock the class which is to be used by the dut
     mc_instance = MagicMock()
@@ -30,4 +32,4 @@ def test_Mock_instance(mock_fun_to_be_mocked):
     mc_instance.my_method.return_value = "return value"
 
     mock_fun_to_be_mocked.return_value = 4
-    assert main_test.fun_to_be_tested() == 6, "fun_to_be_mocked returned other than 3"
+    assert mocking.fun_to_be_tested() == 7, "fun_to_be_mocked returned other than 3"

@@ -1,3 +1,4 @@
+# pylint: skip-file
 import pytest
 import pathlib
 import shutil
@@ -9,9 +10,8 @@ from datetime import datetime
 
 # user packages
 from .context import dkb
-from dkb.fl import fileLoader as fl
 from dkb.db import db_api as db
-from dkb.dkb import DKB
+from dkb.dkb import Dkb
 import dkb.api
 
 FIXTURE_DIR = pathlib.Path(__file__).parent.resolve() / "fixtures"
@@ -25,7 +25,7 @@ def db_file2copy():
 def db4test_handler():
     db_file2copy = FIXTURE_DIR / "db2test_copy.db"
     db_file = FIXTURE_DIR / "db4test.db"
-    db_handler = db.DB_Handler(db_file)
+    db_handler = db.DbHandler(db_file)
     yield db_handler
     db_handler.close()
     time.sleep(2)
@@ -60,7 +60,7 @@ def test_import_csv(db4test_handler):
 
     '''
     db_handler = db4test_handler
-    dkb_ld = DKB()
+    dkb_ld = Dkb()
     cmd = dkb.api.CmdImportNewCsv(db_handler, dkb_ld, FIXTURE_DIR / 'test1.csv')
     cmd.execute()
     
@@ -127,7 +127,7 @@ def test_csv_moved(archive):
 # plugin can be used to not modify the original file https://pypi.org/project/pytest-datafiles/
 # @pytest.mark.datafiles(pathlib.Path(__file__).parent.resolve() / "fixtures" / "tst1.csv")
 # def test_csv_read(pathes):
-#     loader = dkb.DKB() 
+#     loader = dkb.Dkb() 
 #     assert loader is not None
 #     df, checksum = loader.get_dkb_df(pathes / 'tst.csv') # not utf-8 encoded
 #     assert df is not None
@@ -144,9 +144,9 @@ def test_csv_moved(archive):
     '''
 '''
 def test_orm_import_in_db(pathes):
-    loader = dkb.DKB()
+    loader = dkb.Dkb()
     csv_df = loader.get_dkb_df(pathes / 'tst.csv')
-    o = orm.DB_Handler(pathes, 'new_db_from_test', 'sqlite3')
+    o = orm.DbHandler(pathes, 'new_db_from_test', 'sqlite3')
     o.import_dkb_df(csv_df)
     # assert o != None
     # o.importDKBDF(csv_df)
@@ -171,7 +171,7 @@ def test_orm_create_tables(pathes):
 
 # FAILING - check the selector
 def test_orm_get_db_data(pathes):
-    o = orm.DB_Handler(pathes, 'db4test', 'sqlite3')
+    o = orm.DbHandler(pathes, 'db4test', 'sqlite3')
     # data = o.get_month('2016', '04')
     # assert len(data) > 0
     o.update_engine()
@@ -195,7 +195,7 @@ def test_dbTableCreate(pathes):
 def test_dbImportDF(pathes):
     db = sq.DB(pathes, 'test_db', 'sqlite3')
     db.setTableName("dkb")
-    loader = dkb.DKB(pathes)
+    loader = dkb.Dkb(pathes)
     df=loader.parseDkbData()
 
     # assert db.importNewData(df) == True

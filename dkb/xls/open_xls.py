@@ -1,8 +1,8 @@
+""" what is the module about? """
+from openpyxl import load_workbook
+#from openpyxl import Workbook
 
-from openpyxl import Workbook, load_workbook
-
-
-class ExcelCfg(object):
+class ExcelCfg():
     _gesamtkosten_table = {'start':'A1', 'stop': 'C1'}
     _account_wowa = {'start': 'A7', 'stop': 'C7'}
     xls_attr = {'as_template': False, 
@@ -11,29 +11,29 @@ class ExcelCfg(object):
                 }
 
 
-class ExcelWriter(object):
+class ExcelWriter():
     '''
     class to write into existing Excel by using xlwings
     '''
     def __init__(self, xls_file) -> None:
         self.xls_file = xls_file
-        self.wb = load_workbook(xls_file, read_only=False, keep_vba=True)
+        self.work_book = load_workbook(xls_file, read_only=False, keep_vba=True)
         # -------------------------------------- #
-        # title = self.wb['title']
+        # title = self.work_book['title']
         # title['H10'] = "Python executed: ExcelWriter initialized"
-        # self.wb.save(xls_file)
-            
+        # self.work_book.save(xls_file)
+    # pylint: disable=unused-argument, bare-except, missing-function-docstring
     def create_new_sheet(self, name: str, after: str):
         try:
-            sheet = self.wb[name]
+            sheet = self.work_book[name]
         except:
-            sheet = self.wb.create_sheet(name)
+            sheet = self.work_book.create_sheet(name)
         return sheet
-    
+
     def write_month(self, sheet, data):
         print(sheet)
         cells = ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
-        for ln_ctr, dt in enumerate(data, start=5):
-            for cell, val in zip(cells, list(dt)):
-                sheet[cell+str(ln_ctr)] = val        
-        self.wb.save(self.xls_file)
+        for ln_ctr, rdata in enumerate(data, start=5):
+            for cell, val in zip(cells, list(rdata)):
+                sheet[cell+str(ln_ctr)] = val
+        self.work_book.save(self.xls_file)

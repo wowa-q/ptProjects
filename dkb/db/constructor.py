@@ -1,10 +1,15 @@
+''' The module is required to be imported to have 
+a use of the same Base instance '''
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 Base = declarative_base()
 Session = sessionmaker()
 
-class DB_Constructor():
-    def __init__(self, pth):
+# pylint: disable=too-few-public-methods
+class DbConstructor():
+    ''' class to provide instances of Base and Session'''
+    def __init__(self):
+        # pylint: disable=invalid-name
         self.Base = declarative_base()
         self.Session = sessionmaker()
         # self.Session.close_all()

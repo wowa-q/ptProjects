@@ -1,3 +1,5 @@
+# pylint: skip-file
+
 import pytest
 import pathlib
 import shutil
@@ -81,7 +83,7 @@ def test_db_created(db_file2create):
     # test: new db file with tables can be created  
     fileList=list(FIXTURE_DIR.glob('**/*.db'))
     before = len(fileList)
-    db_handler = db.DB_Handler(FIXTURE_DIR)
+    db_handler = db.DbHandler(FIXTURE_DIR)
     db_handler.create_db(db_file2create)
     fileList=list(FIXTURE_DIR.glob('**/*.db'))
     after = len(fileList)  
@@ -90,7 +92,7 @@ def test_db_created(db_file2create):
 
 def test_import_single_class(classes_dict, db_file2modify):
     #test: new class can be added
-    db_handler = db.DB_Handler(db_file2modify)    
+    db_handler = db.DbHandler(db_file2modify)    
     db_handler.create_classes(classes_dict)
     result = db_handler.get_class_from_classes_by_name(classes_dict['name'])    
     db_handler.close()     
@@ -98,7 +100,7 @@ def test_import_single_class(classes_dict, db_file2modify):
 
 def test_import_single_cat(cat_dict, db_file2modify): 
     # test: new category can be added
-    db_handler = db.DB_Handler(db_file2modify)    
+    db_handler = db.DbHandler(db_file2modify)    
     db_handler.create_category(cat_dict)
     result = db_handler.get_cat_from_category_by_name(cat_dict['name'])    
     db_handler.close()
@@ -106,7 +108,7 @@ def test_import_single_cat(cat_dict, db_file2modify):
 
 def test_create_new_single_meta(meta_dict, db_file2modify): 
     # test: new meta entry can be added 
-    db_handler = db.DB_Handler(db_file2modify)    
+    db_handler = db.DbHandler(db_file2modify)    
     db_handler.create_csv_meta(meta_dict)
     result = db_handler.find_checksum(meta_dict['checksum'])    
     db_handler.close()     
@@ -123,16 +125,16 @@ def test_import_test1_csv():
     '''
     pytest.skip('not correct test')
     db_file = pathes / "db4test.db"
-    db_handler = db.DB_Handler(db_file)
+    db_handler = db.DbHandler(db_file)
     session = db_handler.dkb_session()
-    before = len(session.query(dkb_table.DKB_Table.checksum).all())
-    dkb_ld = dkb.DKB()
+    before = len(session.query(dkb_table.DkbTable.checksum).all())
+    dkb_ld = dkb.Dkb()
     csv_file = pathes / "test2.csv"
     importer = api.CmdImportNewCsv(db_handler, dkb_ld, csv_file)
     importer.execute()
-    # dkb_handler = dkb_table.DKB_Table_Handler(db_handler.dkb_session, db_handler.dkb_engine)
+    # dkb_handler = dkb_table.DkbTableHandler(db_handler.dkb_session, db_handler.dkb_engine)
     # engine = db_handler.dkb_engine
-    result = session.query(dkb_table.DKB_Table.checksum).all()
+    result = session.query(dkb_table.DkbTable.checksum).all()
     assert len(result) > before, f"result retrived, before: {before} after: {len(result)}"
 
 # @pytest.mark.datafiles('/opt/big_files/film1.mp4')

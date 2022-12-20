@@ -1,23 +1,30 @@
+'''
+Interface to db table CsvMeta
+'''
 from sqlalchemy import ForeignKey, Column, String, Integer, Float
 
 from dkb.db.constructor import Base
 from dkb.cfg import ResponseCode as RC
 
-class DKB_Table(Base):
+# pylint: disable=too-few-public-methods
+class DkbTable(Base):
+    ''' class to build a table in the data base '''
     __tablename__ = "dkb-table"
     # Columns erstellen
-    __header = [
-                'date',
-                'booking-date',
-                'text',
-                'debitor',
-                'verwendung',
-                'konto',
-                'blz',
-                'value',
-                'debitor-id',
-                'Mandats reference',
-                'Customer reference']
+
+    # __header = [
+    #             'date',
+    #             'booking-date',
+    #             'text',
+    #             'debitor',
+    #             'verwendung',
+    #             'konto',
+    #             'blz',
+    #             'value',
+    #             'debitor-id',
+    #             'Mandats reference',
+    #             'Customer reference']
+
     id              = Column("id", Integer, primary_key=True)
     date            = Column("date", String)
     booking_date    = Column("booking-date", String)
@@ -43,8 +50,8 @@ class DKB_Table(Base):
     def __repr__(self) -> str:
         return f"{self.id} - {self.date} - {self.konto} - {self.value} - {self.checksum}"
 
-class DKB_Table_Handler(object):
-
+class DkbTableHandler():
+    ''' class providing methods to work with the table from data base '''
     def __init__(self, sessionmaker, engine) -> None:
         self.session = sessionmaker()
         self.engine = engine
@@ -52,17 +59,15 @@ class DKB_Table_Handler(object):
 # ------------------ Update Table data -------------------------------
 # ----------------------------------------------------------------    
     def add(self, ln_as_dict):
-        (rc, lresults) = self._find_checksum(ln_as_dict["checksum"])
-        if rc == RC.DKB_TABLE_NOK:
-            # reading DKB table not possible
-            return RC.DKB_TABLE_NOK
-        elif rc == RC.DKB_TABLE_OK:
+        ''' method to add new entry in the table '''
+        (return_c, lresults) = self._find_checksum(ln_as_dict["checksum"])
+        if return_c == RC.DKB_TABLE_OK:
             if len(lresults) > 0:
                 # an entry was found in the meta table -> line was already imported
                 print('DKB-Table-Handler: Transaction already imported')
                 print(lresults)
             else: 
-                new_dkb_line = DKB_Table(
+                new_dkb_line = DkbTable(
                     date            = ln_as_dict['date'],            
                     booking_date    = ln_as_dict["booking-date"],
                     text            = ln_as_dict["text"],
@@ -79,16 +84,20 @@ class DKB_Table_Handler(object):
                 print(ln_as_dict["verwendung"], ln_as_dict["value"])
                 self.session.add(new_dkb_line)
                 self.session.commit()
-                return RC.DKB_TABLE_OK    
+        return return_c
 
     def import_pure_csv(self, csv_lines_as_dict, csv_meta):      
-        # TODO update Meta table currently done by user  
+        ''' method to import csv file into data base '''
+        if csv_meta:
+            # TODO update Meta table currently done by user
+            pass
+
         for ln_as_dict in csv_lines_as_dict:
             self.add(ln_as_dict)        
 
     def _find_checksum(self, checksum):
         try:
-            results = self.session.query(DKB_Table).filter(DKB_Table.checksum == checksum)
+            results = self.session.query(DkbTable).filter(DkbTable.checksum == checksum)
             lres = []
             for result in results:
                 print(result)
@@ -106,15 +115,15 @@ class DKB_Table_Handler(object):
         month: 01 January
         '''
         try:            
-            results = self.session.query(DKB_Table.checksum,
-                                        DKB_Table.date, 
-                                        DKB_Table.debitor, 
-                                        DKB_Table.text, 
-                                        DKB_Table.verwendung, 
-                                        DKB_Table.value,
-                                        DKB_Table.classes,
-                                        DKB_Table.category
-                                        ).filter(DKB_Table.date.like(f'%{month}.{year}%')).all()
+            results = self.session.query(DkbTable.checksum,
+                                        DkbTable.date, 
+                                        DkbTable.debitor, 
+                                        DkbTable.text, 
+                                        DkbTable.verwendung, 
+                                        DkbTable.value,
+                                        DkbTable.classes,
+                                        DkbTable.category
+                                        ).filter(DkbTable.date.like(f'%{month}.{year}%')).all()
             header = ('checksum', 
                     'Datum', 
                     'Debitor', 
@@ -135,5 +144,6 @@ class DKB_Table_Handler(object):
             return (RC.DKB_TABLE_NOK, [])
     
     def get_class(self, dkb_class):
-        result = self.session.query(DKB_Table).filter(DKB_Table.classes == dkb_class).all() 
+        ''' use filter class name to retrive data from the table '''
+        result = self.session.query(DkbTable).filter(DkbTable.classes == dkb_class).all() 
         return result

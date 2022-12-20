@@ -1,3 +1,4 @@
+''' global configuration of the App '''
 import pathlib
 import os 
 from enum import Enum
@@ -38,6 +39,7 @@ class Project(Enum):
     #             current working directory: {self.WORKING_DIRECTORY_PATH}'
 
 class ResponseCode(Enum):
+    ''' setting global return codes '''
     # Generic Response codes
     OK = 1
     NOK = 0
@@ -54,7 +56,7 @@ class ResponseCode(Enum):
     # Category Table response codes
     CAT_TABLE_OK = 1
     CAT_TABLE_NOK = 0
-     
+
 
 
 if __name__ == '__main__':
