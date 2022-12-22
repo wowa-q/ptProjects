@@ -1,11 +1,10 @@
-"""
-What is the module about
-"""
+""" The main programm entry point with user interface CLI"""
+
 import argparse
 # user packages:
 from dkb.cfg import Project
 from dkb.db import db_api
-from dkb.dkb import DKB
+from dkb.dkb import Dkb
 from dkb.xls import open_xls as xls
 from dkb import api
 
@@ -35,7 +34,7 @@ cmd = args.cmd
 if cmd in "Create-new-DB": # cli test passed, excel failed
     # --cmd Create-new-DB --db_name example.db
     db_file = fix_path / args.db_name
-    db_handler = db_api.DB_Handler(db_file)
+    db_handler = db_api.DbHandler(db_file)
     invoker.set_main_command(api.CmdCreateNewDB(db_handler,db_file))
 elif cmd in "Import-new-csv": # cli test passed, excel failed
     # --cmd Import-new-csv --db_name example.db --csv_name 1001670080.csv
@@ -43,8 +42,8 @@ elif cmd in "Import-new-csv": # cli test passed, excel failed
     csv_file = fix_path / 'csv' / args.csv_name
     zip_file = fix_path / 'zip' / 'csv.zip'
     db_file = fix_path / args.db_name
-    db_handler = db_api.DB_Handler(db_file)
-    dkb_ld = DKB()
+    db_handler = db_api.DbHandler(db_file)
+    dkb_ld = Dkb()
     print(f'Import-new-csv: {csv_file}')
     invoker.set_main_command(api.CmdImportNewCsv(db_handler, dkb_ld, csv_file))
     invoker.set_on_finish(api.CmdArchiveCsv(csv_file, zip_file))
@@ -52,7 +51,7 @@ elif cmd in "Create-new-Month": # cli test passed, excel passed
     # --cmd Create-new-Month --db_name example.db --year 2016 --month 01
     db_file = fix_path / args.db_name
     xls_file = fix_path / 'haushalt.xlsm'
-    db_handler = db_api.DB_Handler(db_file)
+    db_handler = db_api.DbHandler(db_file)
     # writer = exc.ExcelWriter(xls_file)
     writer = xls.ExcelWriter(xls_file)
     invoker.set_main_command(api.CmdNewMonth(db_handler, writer, str(args.year), str(args.month)))

@@ -71,5 +71,5 @@ class DbHandler():
     def get_cat_from_category_by_name(self, name): # tested
         ''' API to retrive Category from the table '''
         table_handler = CategoryTableHandler(self.dkb_session, self.dkb_engine)
-        return table_handler.get_category_by_name(name)
+        return table_handler.get_row_by_name(name)
     

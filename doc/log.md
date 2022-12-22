@@ -25,3 +25,6 @@
 * [packaging guideline by fedora](https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/)
 * [packaging by py-pkgs.org](https://py-pkgs.org)
 * [packaging by python.org](https://packaging.python.org/en/latest/tutorials/packaging-projects/)
+### Python project template
+Git repository for Python project template including default configuration for Python development tools
+* [Python project template](https://github.com/franneck94/Python-Project-Template)

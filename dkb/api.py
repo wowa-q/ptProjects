@@ -20,6 +20,13 @@ class Command(ABC):
 # ------------------- DB interaction -----------------------------
 # ----------------------------------------------------------------
 class CmdCreateNewDB(Command):  # ready to test
+    """_summary_
+
+    Parameters
+    ----------
+    Command : _type_
+        _description_
+    """
     ''' Command class to create new DB '''
     def __init__(self, db_handler, db_file):
         self.db_handler = db_handler
