@@ -17,4 +17,9 @@ from .dbfixes import fx_meta_handler
 from .dbfixes import fx_dkb_handler
 from .dbfixes import fx_archive
 
+from .xlsfixes import fx_xls_file2create
+from .xlsfixes import fx_xls_owriter
+from .xlsfixes import fx_month_data
+from .xlsfixes import fx_xls_template
+
 FIXTURE_DIR = pathlib.Path(__file__).parent.resolve() / "fixtures"

@@ -1,19 +1,22 @@
 # OPL
-* DKB: 
-  
-  * DKB should process only one csv file and add kontonummer to the meta data
-  * DKB shall calculate the hash over the csv file, fetch the kontonummer and provide this to orm to be created in the meta table
-* ORM
-  * ORM should check if csv_df was already imported into db by checking the hash
-  * ORM should create meta table and be used as ForeignKey in DKB-Table
-  * Create new table for logging data
-  * create more tests for ORM
-* exc
-  * Excel should have a GUI to associate a class with a row from DKB-Table
+## General
+- [ ] Define how the tool shall be used
+- [ ] Define how the excel shall look like (create a template?)
+- [ ] Test month import manually
 
-* Refactoring:
-  * 
-  * remove the DB module - not needed
+## DB Tables
+- [ ] dkb-table should have the account per entry
+- [ ] dkb-table should have ForeignKey to the meta data
+- [ ] when retriving the month data ForeignKeys, csv-meta, classes and category shall be exported
+- [ ] Create new table for logging data
+
+## Excel
+- [ ] The imported table should have a filter
+- [ ] Excel should have a GUI to associate a class with a row from DKB-Table
+- [ ] Define ranges for meta data, month data: Date of first entry and last entry
+- [ ] Implement column finder 
+- [ ] `write_month` shall use data input and validate it and not use hard coded columns
+
 
 # Checkout package: 
 ## Taipi for the GUI
