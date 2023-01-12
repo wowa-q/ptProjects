@@ -15,12 +15,12 @@ class Category(Base):
     __tablename__ = "category"
     id = Column("id", Integer, primary_key=True)
     name = Column("name", String)
-    type = Column("type", String)    
+    type = Column("type", String)
     cycle = Column("cycle", String)
 
     def __init__(self, name, mtype, cycle) -> None:
         self.name = name
-        self.type = mtype        
+        self.type = mtype
         self.cycle = cycle
 
     def __repr__(self) -> str:
@@ -44,22 +44,22 @@ class CategoryTableHandler(con.TableHandler):
     @deprecation.deprecated(details="Use get_row_by_name(name) instead")
     def get_category_by_name(self, category):
         ''' use filter category name to retrive data from the table '''
-        result = self.session.query(Category.name, 
-                                    Category.type, 
+        result = self.session.query(Category.name,
+                                    Category.type,
                                     Category.cycle
-                                    ).filter(Category.name == category).first() 
+                                    ).filter(Category.name == category).first()
         return result
-    
+
     def get_row_by_name(self, name):
         """to get a row by name
-        
+
         Args:
             name (String): column name
         """
-        result = self.session.query(Category.name, 
-                                    Category.type, 
+        result = self.session.query(Category.name,
+                                    Category.type,
                                     Category.cycle
-                                    ).filter(Category.name == name).first() 
+                                    ).filter(Category.name == name).first()
         return result
 
     @deprecation.deprecated(details="Use update_row(name, **values) instead")
@@ -70,7 +70,7 @@ class CategoryTableHandler(con.TableHandler):
             to_update.type = value['type']
         if 'cycle' in value:
             to_update.cycle = value['cycle']
-    
+
     def update_row(self, name, **values):
         """to update the row, filtered by name
 
@@ -79,7 +79,7 @@ class CategoryTableHandler(con.TableHandler):
             **values (Dict): positional arguments type, cycle
         """
         to_update = self.session.query(Category).filter(Category.name == name).first()
-        
+
         if 'type' in values:
             to_update.type = values['type']
         if 'cycle' in values:
