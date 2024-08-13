@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% extends "app1/base_app.html" %}
+
+{% block body_block %}
+    <div class="jumbotron">
+        <h1> This is List of schools</h1>
+        <ol>
+            {% for school in schools %}
+                <h2>
+                    <li>
+                        <a href="{{school.id}}">{{school.name}}</a>
+                    </li>
+                </h2>
+            {% endfor %}
+        </ol>
+    </div>
+{% endblock %}

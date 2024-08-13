@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+{% extends "l4app/base.html" %}
+    {% block body_block %}
+    <h1> this is relative.html</h1>
+    <div class="container">
+        <div class="jumbotron"> 
+            <h1>This is relative.html Level 4</h1>
+            <h2>Go to users</h2>
+            <a href="{% url 'l4app:user' %}">Users</a>
+        </div>
+    </div>
+    {% endblock %}

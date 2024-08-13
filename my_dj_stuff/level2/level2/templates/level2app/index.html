@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <!-- head contains meta data -->
+    <head>
+        <meta charset="utf-8">
+        <title>Level2 APP</title>
+         <link rel="stylesheet" href="{% static "css/mystyle.css" %}"> <!-- -->
+
+    </head>
+    <!-- here is the page content -->
+    <body>
+        <h1>This is index.html Level2</h1>
+        
+        <img src="{% static "images/Audi-A6.jpg" %}" alt="Oh-Oh">
+
+        <h2>Access record</h2>
+        <div class="dajngotwo">
+            {% if acess_record %}
+                <table>
+                    <thead>
+                        <th>site name</th>
+                        <th>Date accessed</th>
+                    </thead>
+                    {% for acc in acess_record %}
+                    <tr>
+                        <td>{{ acc.name }}</td>
+                        <td>{{ acc.date }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>No access to the data</p>
+            {% endif %}
+        </div>
+        
+    </body>
+</html>

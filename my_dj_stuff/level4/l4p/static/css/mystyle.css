@@ -1,0 +1,8 @@
+h1{
+    /* a is the paramenter for the transparency 0 - 1 */
+    color: rgba(78, 101, 233, 0.5)
+}
+
+.dajngotwo{
+    border: 2px solid black
+}

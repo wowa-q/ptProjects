@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+{% extends "l4app/base.html" %}
+    {% block body_block %}
+        <h1>This is user.html Level 4</h1>
+        <div class="container">
+            <form method="POST">
+                <a href="{% url 'l4app:relative' %}">Relative</a>
+                <a href="{% url 'admin:index' %}">Admin</a>                
+                <input type="submit" class="btn btn-primary" value="SuBMiT">
+                {% csrf_token %}
+            </form>
+            
+        </div>
+    {%endblock%}
+        

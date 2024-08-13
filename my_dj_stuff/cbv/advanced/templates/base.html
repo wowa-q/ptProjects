@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <!-- head contains meta data -->
+    <head>
+        <meta charset="utf-8">
+        <title>CBV APP</title>
+        
+        <!-- Bootstrap CSS can be also be downloaded locally -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      
+    </head>
+    <!-- here is the page content -->
+    <body>
+        <nav class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <ul class="nav navbar-nav">
+                    <li><a class="navbar-brand" href="{% url 'index' %}">INDEX</a></li>
+                    
+                    <li><a class="navbar-link" href="{% url 'app1:list' %}">Schools</a></li>
+                    <li><a class="navbar-link" href="{% url 'admin:index' %}">Admin</a></li>
+
+                   
+                    
+                </ul>
+            </div>
+        </nav>
+        <div class="container">
+            {% block body_block %}
+
+            {% endblock %}
+        </div>        
+    </body>
+</html>

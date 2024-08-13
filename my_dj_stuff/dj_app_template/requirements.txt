@@ -1,0 +1,2 @@
+# will install the local packagespy
+-e ../../django-receipts[dev]
