@@ -1,0 +1,64 @@
+/* Comment */
+
+/*
+    selected tag {
+        property: value;
+    }
+
+body{
+    background-color: gray;
+}
+    */
+body{
+    background: url(webcam-toy-foto.jpg);
+    background-repeat: no-repeat;
+    background-size: 40%
+}
+/*
+div{
+    background-color: rgba(17, 216, 77, 0.75);
+    border-width: 3px;
+    border-style: dotted;
+}
+p{
+color: blueviolet;
+}
+li{
+    color: #0895a8;
+}
+    h1{
+    color:rgb(17, 216, 77)
+}
+
+*/
+h2{
+    /* a is the paramenter for the transparency 0 - 1 */
+    color: rgba(17, 216, 77, 0.5)
+}
+
+span{
+    background: red;
+    color: black;
+}
+
+li{
+    color: #0895a8;
+}
+/* .classname*/
+.firstClass{
+    color: blue;
+}
+.secondClass{
+    color: red;
+}
+#singledout{
+    color: green;
+    text-decoration: line-through;
+}
+h3 + ul{
+    border: 4px dotted purple
+}
+li a[href="www.npr.org"]{
+    color: aquamarine;
+    border: 2px solid orange;
+}

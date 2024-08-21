@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <!-- head contains meta data -->
+    <head>
+        <meta charset="utf-8">
+        <title>This is the advaned html exercise</title>
+    </head>
+    <!-- here is the page content -->
+    <body>
+        <h1>Tables</h1>
+        <p>
+            <table border="1">
+                <thead>
+                    <th>number</th>
+                    <th>color</th>
+                    <th>land</th>
+                </thead>
+                <tr>
+                    <td>1</td>
+                    <td>color</td>
+                    <td>ger</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>color</td>
+                    <td>ger</td>
+                </tr>
+            </table>
+        </p>
+        <h1>Forms</h1>
+        <form>
+            <h2>Input Type</h2>
+            <input type="text" name="user name" value="Name">
+            <input type="email" name="usermail" value="email">
+            <input type="password" name="password" value="password">
+            <p>
+                <input type="submit" name="" value="submit">
+            </p>
+        </form>
+
+        <form>
+            <h2>Color picer</h2>
+            <p>
+                <input type="color" name="" value="">
+            </p>
+        </form>
+
+        <form action="https://developer.mozilla.org" method="get">
+            <h2>Input Type</h2>
+            <p>Enter Emial</p>
+            <input type="text" name="user name" value="Name">
+            <input type="email" name="usermail" value="email">
+
+            <p>
+                <input type="submit" name="" value="submit">
+            </p>
+        </form>
+
+        <form>
+            <p></p>
+            <label>
+                Enter text
+                <input type="text" name="user name" value="enter text 1" >
+            </label>
+            <label>
+                Enter text
+                <input type="text" name="user name" value="enter text 2">
+            </label>
+            <p>
+                <label for="my_id"> Enter text </label>
+                <input id="my_id" type="text" name="user name" value="enter text 3">
+                <input id="my_id" type="text" name="user name" value="enter text 4">
+            </p>
+        </form>
+
+        <form>
+
+            <input type="text" name="user name" placeholder="not required">
+            <input type="email" name="usermail"  placeholder="@ is required">
+            <input type="text" name="usermail"  placeholder="required" required>
+            <input type="submit" name="" value="submit">
+        </form>
+
+        <form action="https://developer.mozilla.org" method="get">
+            <h3>Where are you from?</h3>
+            <!-- linced by the name -->
+            <label for="in"> Inside </label>
+            <input id="in" type="radio" name="loc" value="">
+
+            <label for="out"> Outside </label>
+            <input id="out" type="radio" name="loc" value="">
+
+            <label for="none"> None </label>
+            <input id="none" type="radio" name="no" value="">
+
+            <h3>Service</h3>
+            <select name="stars">
+                <option value="sehr gut"> 1 </option>
+                <option value="gut"> 2 </option>
+
+            </select>
+        </form>
+    </body>
+</html>
