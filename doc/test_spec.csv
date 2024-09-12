@@ -1,0 +1,10 @@
+test scope;preconditions;execution;results
+add category;"category table exists 
+dictionary with category data exists";" cat_handler.add(dict) 
+result = cat_handler.get_cat_from_category_by_name(dict['name'])";result != None len(result) == 1 
+update_category;category exists in category teblae;"cat_handler.update_category(dict['name'], {'type':'cyclic'}) 
+result = cat_handler.get_cat_from_category_by_name(dict['name'])";"result != None len(result) == 1 
+result['type'] == 'cyclic'"
+add 10 categories;category table exists dictionary with category data exists;" cat_handler.add(dict) 
+result = cat_handler.get_table_length()";result = len + 10
+get cat teble length;category table exists with entries >= 0;result = cat_handler.get_table_length();result = table len
