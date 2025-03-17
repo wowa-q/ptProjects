@@ -1,0 +1,66 @@
+site_name: Manual
+
+# anpassen auf den Ordner (standard ist docs)
+docs_dir: doc
+
+# setting up the theme for documentation
+theme:
+  name: "material"  # UV: mkdocs-material ist installiert
+  palette:
+    primary: indigo
+    accent: deep purple
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - content.code.copy  # Ermöglicht Codeblock-Kopieren
+    - content.code.annotate  # Falls du Code-Erklärungen nutzt
+  icon:
+    annotation: material/arrow-right-circle  # Annotationen für Code
+
+markdown_extensions:
+  - pymdownx.highlight:
+      use_pygments: true
+      anchor_linenums: true
+      linenums: true
+  - pymdownx.superfences  # Erweitertes Code-Highlighting
+
+# to generate documentation from docstrings from code
+plugins:
+  - mkdocstrings
+  
+
+# include new chapter / md files
+nav:
+  - Home: index.md
+  - Development:   
+    - Development Tools: 
+      - Setup: tools/dev_tools.md
+      - Git Basics: tools/git-basics.md
+      - Monorepo: tools/monorepo.md
+      - SQL Basics: tools/sql_basics.md
+      - Python Tools:
+        - uv: tools/pttools/uv.md
+        - pytest: tools/pttools/pytest.md
+        - linter: tools/pttools/linter.md
+        - diverse: tools/pttools/diverse.md
+    - Documentation:
+      - Doc-Build: tools/doc_tools.md
+  - Django:
+      - Django in Nutshell: django/dj_nutshel.md 
+      - chapters:
+        - Models: django/chapters/models.md
+        - Views: django/chapters/views.md
+        - Templates: django/chapters/templates.md
+        - Forms: django/chapters/forms.md        
+        - Admin: django/chapters/admin.md           
+        - User Handling: django/chapters/user_handling.md   
+        - Testing: django/chapters/dj_testing.md   
+        - Deployment: django/chapters/deployment.md
+  - HTML & CSS:
+      - HTML Basics: html/html-nutshell.md
+      - CSS Basics: html/css-nutshell.md
+  - Bootstrap:
+      - Basics: bootstrap/basics.md
+  - Python:
+      - Python libs: python/libs.md
