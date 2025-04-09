@@ -33,3 +33,10 @@ The tool is formating the code according to PEP8. It uses the flake8 configurati
 The tool is checking the types e.g.: `def fun(var: str) -> str`
 With `mypy file.py` the results will be printed in the terminal e.g. inconsistoncies in the types.
 `from typing import Iterable`
+
+
+
+# More Tools:
+
+- [WAT](https://github.com/igrek51/wat/blob/master/README.md): WAT is a powerful inspection tool designed to help you explore unknown objects and examine them at runtime.
+- [Pydantic](https://realpython.com/python-pydantic/): robust type checking and data validation - to be used in productive development

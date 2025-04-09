@@ -1,8 +1,10 @@
 # Django in a nut shell
 
+Course from Maximilian Schwarzmüller: [git](https://github.com/academind/django-practical-guide-course-code)
+
 ## Template-View-Model Pattern
 
-![alt text](img/MVT.png)
+![Model-View-Pattern](img/MVT.png)
 
 ## Create new project
 
@@ -87,6 +89,11 @@ django-admin startapp APP_NAME
 
 
 # Links
+
+[FastHTML with HTMLX](https://simn.fr/posts/dicthing-django-admin-for-fasthtml)
+[Nanodjango](https://radiac.net/blog/2025/01/monkeypatching-django/)
+[Fake Django model for Testing](https://www.djangotricks.com/blog/2024/05/generating-fake-django-model-instances-with-factory-boy/)
+
 * urls.py: routes mapping within the project [doc](https://docs.djangoproject.com/en/5.0/topics/http/urls/)
 * wsgi.py: small gateway interface for deployment [doc](https://docs.djangoproject.com/en/5.0/howto/deployment/wsgi/)
 * asgi.py: small gateway interface for deployment [doc](https://docs.djangoproject.com/en/5.0/howto/deployment/asgi/)

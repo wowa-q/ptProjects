@@ -41,3 +41,9 @@ def test_raises(x: Any, y: Any) -> None:
     with pytest.raises(TypeError):
         _ = Vector2D(x, y)
 ```
+
+# To Read:
+
+- [select arguments for failing tests](https://mathspp.com/blog/til/pytest-selection-arguments-for-failing-tests)
+
+- [test report](https://testandcode.com/episodes/markdown-reports-pytest-md-pytest-md-report)
