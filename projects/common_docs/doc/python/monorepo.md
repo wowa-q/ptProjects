@@ -1,5 +1,7 @@
 # [Monorepo Basics](https://gafni.dev/blog/cracking-the-python-monorepo/) 
 
+[additional ressources](https://github.com/JasperHG90/uv-monorepo)
+
 ## Tools 
 The monorepo is built with [uv](https://docs.astral.sh/uv/getting-started/) and [dagger](https://docs.dagger.io/ci/quickstart/daggerize/)
 
